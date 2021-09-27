@@ -68,15 +68,27 @@
         </plugins>
     </build>
     <distributionManagement>
+        <!--        <repository>-->
+        <!--            <id>itwoods-releases</id>-->
+        <!--            <name>Nexus Release Repository</name>-->
+        <!--            <url>https://maven.home.itwoods.cn/repository/itwoods-maven-private/</url>-->
+        <!--        </repository>-->
+        <!--        <snapshotRepository>-->
+        <!--            <id>itwoods-snapshots</id>-->
+        <!--            <name>Nexus Snapshot Repository</name>-->
+        <!--            <url>https://maven.home.itwoods.cn/repository/itwoods-maven-private/</url>-->
+        <!--        </snapshotRepository>-->
+
         <repository>
-            <id>releases</id>
+            <id>sonatype-nexus-staging</id>
             <name>Nexus Release Repository</name>
-            <url>https://maven.home.itwoods.cn/repository/itwoods-maven-private/</url>
+            <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
         </repository>
         <snapshotRepository>
-            <id>snapshots</id>
-            <name>Nexus Snapshot Repository</name>
-            <url>https://maven.home.itwoods.cn/repository/itwoods-maven-private/</url>
+            <id>sonatype-nexus-snapshots</id>
+            <name>Sonatype Nexus Snapshots</name>
+            <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
         </snapshotRepository>
+
     </distributionManagement>
 </project>
