@@ -1,7 +1,11 @@
 package cn.itwoods.logback.rabbit;
 
 import ch.qos.logback.classic.spi.ILoggingEvent;
+import ch.qos.logback.core.Layout;
 import ch.qos.logback.core.UnsynchronizedAppenderBase;
+import ch.qos.logback.core.encoder.Encoder;
+import ch.qos.logback.core.encoder.LayoutWrappingEncoder;
+import ch.qos.logback.core.status.ErrorStatus;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.RabbitConnectionFactoryBean;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -11,6 +15,8 @@ import org.springframework.boot.context.properties.PropertyMapper;
 import java.time.Duration;
 
 /**
+ * rabbit日志push，需要提前配置好rabbitmq exchange 与 queue,建议queue用lazy惰性队列。
+ *
  * @param <E>
  * @author itwoods.cn
  */
@@ -19,16 +25,22 @@ public class RabbitAppender<E extends ILoggingEvent> extends UnsynchronizedAppen
     private String exchange;
     private String routingKey;
     private RabbitProperties rabbitProperties;
-
+    private Encoder<E> encoder;
 
     @Override
     protected void append(E eventObject) {
+        byte[] encode = encoder.encode(eventObject);
         rabbitTemplate.convertAndSend(exchange
                 , routingKey
-                , eventObject.getMessage());
+                , encode);
     }
 
     public void start() {
+        int errors = 0;
+        if (this.encoder == null) {
+            addStatus(new ErrorStatus("No encoder set for the appender named \"" + name + "\".", this));
+            errors++;
+        }
         try {
             this.rabbitTemplate = new RabbitTemplate(rabbitConnectionFactory(rabbitProperties));
         } catch (Exception e) {
@@ -111,6 +123,21 @@ public class RabbitAppender<E extends ILoggingEvent> extends UnsynchronizedAppen
                 .to(factory::setChannelRpcTimeout);
         factory.afterPropertiesSet();
         return factory;
+    }
+
+    public void setLayout(Layout<E> layout) {
+        LayoutWrappingEncoder<E> lwe = new LayoutWrappingEncoder<>();
+        lwe.setLayout(layout);
+        lwe.setContext(context);
+        this.encoder = lwe;
+    }
+
+    public Encoder<E> getEncoder() {
+        return encoder;
+    }
+
+    public void setEncoder(Encoder<E> encoder) {
+        this.encoder = encoder;
     }
 
 }
