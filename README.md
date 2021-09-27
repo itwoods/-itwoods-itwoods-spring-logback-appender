@@ -1,17 +1,26 @@
-### 文档
-
-+ version： 0.0.1
-+ 引用依赖
+### itwoods-spring-logback-appender
++ Info：
+> logback日志采集传输，使用rabbitmq为传输通道，可结合其它第3方日志处理协同使用，如：es、logstash……，使用方式与原生logback无异，无代码侵入。
++ Version： 0.0.1
++ Dependencies：
 
 ````
  <dependency>
-          <groupId>cn.itwoods</groupId>
-          <artifactId>itwoods-spring-logback</artifactId>
-          <version>latest</version>
+    <groupId>cn.itwoods</groupId>
+    <artifactId>itwoods-spring-logback</artifactId>
+    <version>latest</version>
  </dependency>
+ <dependency>
+    <groupId>org.projectlombok</groupId>
+    <artifactId>lombok</artifactId>
+</dependency>
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-amqp</artifactId>
+</dependency>
 ````
 
-+ 配置logback-spring.xml
++ Setting logback-spring.xml：
 
 ````
   <appender name="RABBIT_APPENDER" class="cn.itwoods.logback.rabbit.RabbitAppender">
@@ -42,6 +51,6 @@
     <appender-ref ref="RABBIT_APPENDER"/>
 </logger>
 ````
-+ 特别说明:
++ Notes:
 > rabbitProperties：
     此配置原则上与spring cloud amqp配置一样，只不过这里是xml方式，其它理论上无异，作者只测试过单机rabbit，没有试过集群，大家可以试下，应该是可以的；
