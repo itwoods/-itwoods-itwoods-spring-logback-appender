@@ -1,6 +1,6 @@
 ### itwoods-spring-logback-appender
 + Info：
-> logback日志采集传输，使用rabbitmq为传输通道，可结合其它第3方日志处理协同使用，如：es、logstash……，使用方式与原生logback无异，无代码侵入。
+> logback日志采集传输框架，采用rabbitmq为传输通道，可结合其它第3方日志处理协同使用，如：es、logstash……，使用方式与原生logback无异，无代码侵入。
 + Version： 0.0.1
 + Dependencies：
 
