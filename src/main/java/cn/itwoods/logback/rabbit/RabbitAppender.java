@@ -17,7 +17,6 @@ import java.time.Duration;
 /**
  * rabbit日志push，需要提前配置好rabbitmq exchange 与 queue,建议queue用lazy惰性队列。
  *
- * @param <E>
  * @author itwoods.cn
  */
 public class RabbitAppender<E extends ILoggingEvent> extends UnsynchronizedAppenderBase<E> {
